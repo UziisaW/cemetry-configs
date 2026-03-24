@@ -42,8 +42,7 @@ const CEMETRY_FIGS = {
           perks: [
             "THE BEST Triggerbot for Using Snipers",
             "Will Look Legit on Clips",
-            "100x Faster Triggerbot unlike Externals",
-            "Swifts Config",
+            "100x Faster Triggerbot unlike Externals"
           ],
         },
         {
@@ -85,7 +84,7 @@ const CEMETRY_FIGS = {
       ],
     },
 
-    // ── Kiciahook V2 Configs ──────────────────────────────────────────────────
+    // ── Kiciahook Premium Configs ──────────────────────────────────────────────────
     {
       id: "kj-premium",
       section: "Kiciahook V2 Configs",

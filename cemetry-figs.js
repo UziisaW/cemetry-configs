@@ -4,7 +4,6 @@ const CEMETRY_FIGS = {
 
   stats: {
     totalSold: 3477,
-    rating: 5.00,
   },
 
   products: [
@@ -25,8 +24,9 @@ const CEMETRY_FIGS = {
         {
           name: "Legit Config",
           price: 4.97,
-          oldPrice: 7.47,
+          oldPrice: 8.00,
           inStock: true,
+          sellauthId: 661433,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/legit-config",
           perks: [
             "The Best Aimbot for Closeting and Clipping",
@@ -37,8 +37,9 @@ const CEMETRY_FIGS = {
         {
           name: "Sniper Config",
           price: 5.97,
-          oldPrice: 8.47,
+          oldPrice: 10.00,
           inStock: true,
+          sellauthId: 661435,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/sniper-config",
           perks: [
             "THE BEST Triggerbot for Using Snipers",
@@ -50,8 +51,9 @@ const CEMETRY_FIGS = {
         {
           name: "Semi Rage Config",
           price: 8.97,
-          oldPrice: 10.97,
+          oldPrice: 16.00,
           inStock: true,
+          sellauthId: 661436,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/semi-rage",
           perks: [
             "Hard Aimbot",
@@ -62,8 +64,9 @@ const CEMETRY_FIGS = {
         {
           name: "Rage Config (THE BEST CONFIG CURRENTLY)",
           price: 12.97,
-          oldPrice: 15.97,
+          oldPrice: 24.00,
           inStock: true,
+          sellauthId: 661438,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/rage-config",
           perks: [
             "Win ALL HvH Games Against Any External OR Script",
@@ -74,12 +77,13 @@ const CEMETRY_FIGS = {
         {
           name: "Config Bundle",
           price: 16.97,
-          oldPrice: 19.97,
+          oldPrice: 32.00,
           inStock: true,
+          sellauthId: 661439,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/bundle-config",
           perks: [
             "All 4 Configs Included in One Purchase",
-            "Best Value — Save Over €10",
+            "Best Value — Save Over €15",
             "Instant Delivery on All 4 Configs",
           ],
         },
@@ -100,9 +104,10 @@ const CEMETRY_FIGS = {
       variants: [
         {
           name: "Legit Config",
-          price: 3.57,
-          oldPrice: 4.57,
+          price: 3.97,
+          oldPrice: 6.00,
           inStock: true,
+          sellauthId: 661440,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/legit-config-kiciahook",
           perks: [
             "The Best Aimbot for Closeting and Clipping",
@@ -112,9 +117,10 @@ const CEMETRY_FIGS = {
         },
         {
           name: "Sniper Config",
-          price: 5.57,
-          oldPrice: 7.79,
+          price: 5.97,
+          oldPrice: 10.00,
           inStock: true,
+          sellauthId: 661441,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/sniper-config-kiciahook",
           perks: [
             "THE BEST Triggerbot for Using Snipers",
@@ -126,8 +132,9 @@ const CEMETRY_FIGS = {
         {
           name: "Semi Rage Config",
           price: 6.97,
-          oldPrice: 8.97,
+          oldPrice: 12.00,
           inStock: true,
+          sellauthId: 661443,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/semi-rage-config-kiciahook",
           perks: [
             "Hard Aimbot",
@@ -138,8 +145,9 @@ const CEMETRY_FIGS = {
         {
           name: "Rage Config (THE BEST CONFIG CURRENTLY)",
           price: 7.97,
-          oldPrice: 9.97,
+          oldPrice: 14.00,
           inStock: true,
+          sellauthId: 661444,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/rage-config-kiciahook",
           perks: [
             "Win ALL HvH Games Against Any External OR Script (Including UE V2)",
@@ -151,12 +159,13 @@ const CEMETRY_FIGS = {
         {
           name: "Config Bundle",
           price: 15.97,
-          oldPrice: 18.97,
+          oldPrice: 30.00,
           inStock: true,
+          sellauthId: 661445,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/bundle-config-kiciahook",
           perks: [
             "All 4 Configs Included in One Purchase",
-            "Best Value — Save Over €10",
+            "Best Value — Save Over €14",
             "Instant Delivery on All 4 Configs",
           ],
         },
@@ -171,33 +180,35 @@ const CEMETRY_FIGS = {
       badge: "Rivals Script",
       abbr: "LUA",
       overview: [
-        "cemetry.lua — an upcoming Rivals script built from the ground up",
+        "cemetry.lua — a Rivals script built from the ground up",
         "Private Key version is live and available now",
         "Lifetime access — you pay once, you own it forever",
       ],
       variants: [
         {
           name: "Private Key",
-          price: null,
+          price: 10.00,
           oldPrice: null,
           inStock: true,
+          sellauthId: 661452,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-private-key",
           perks: [
             "Private Key for cemetry.lua",
             "This version is out and available now",
-            "Lifetime access — own it forever",
+            "Lifetime access — pay once, own it forever",
           ],
         },
         {
           name: "Lifetime",
-          price: null,
+          price: 5.00,
           oldPrice: null,
           inStock: false,
+          sellauthId: 661450,
           sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-lifetime",
           perks: [
             "Lifetime version of cemetry.lua",
-            "This version is not out yet",
-            "Check back soon",
+            "This version is not out yet — check back soon",
+            "Lifetime access — pay once, own it forever",
           ],
         },
       ],

@@ -7,14 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Base reset - keeping things simple */
-    *, *::before, *::after { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-    }
-    
-    /* Color scheme - maybe I should organize these better later */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg:        #020408;
       --bg2:       #040810;
@@ -33,1885 +26,324 @@
       --green:     #00e87a;
       --red:       #ff3d5a;
     }
-    
-    html { 
-      scroll-behavior: smooth; 
-    }
-    
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Syne', sans-serif;
       overflow-x: hidden;
     }
-    
-    /* Noise texture overlay - adds some character to the background */
     body::before {
       content: '';
-      position: fixed; 
-      inset: 0; 
-      z-index: 0; 
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       opacity: 0.5;
     }
-    
-    #stars { 
-      position: fixed; 
-      inset: 0; 
-      z-index: 0; 
-      pointer-events: none; 
-    }
-    
-    /* Gradient mesh for depth */
-    .mesh { 
-      position: fixed; 
-      inset: 0; 
-      z-index: 0; 
-      pointer-events: none; 
-      background: radial-gradient(ellipse 70% 55% at 15% 15%, rgba(30,100,255,0.07) 0%, transparent 65%), 
-                  radial-gradient(ellipse 50% 40% at 85% 75%, rgba(30,100,255,0.05) 0%, transparent 60%); 
-    }
-    
-    .page { 
-      position: relative; 
-      z-index: 1; 
-    }
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .mesh { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 70% 55% at 15% 15%, rgba(30,100,255,0.07) 0%, transparent 65%), radial-gradient(ellipse 50% 40% at 85% 75%, rgba(30,100,255,0.05) 0%, transparent 60%); }
+    .page { position: relative; z-index: 1; }
 
-    /* Navigation bar styles */
+    /* navigation */
     nav {
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      z-index: 100;
-      height: 62px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 62px; display: flex; align-items: center; justify-content: space-between;
       padding: 0 48px;
-      background: rgba(2,4,8,0.82); 
-      backdrop-filter: blur(24px);
+      background: rgba(2,4,8,0.82); backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
     }
-    
-    .nav-logo { 
-      display: flex; 
-      align-items: center; 
-      gap: 10px; 
-      text-decoration: none; 
-      color: var(--text); 
-    }
-    
-    .nav-logo img { 
-      width: 28px; 
-      height: 28px; 
-      object-fit: contain; 
-    }
-    
-    .nav-logo-text { 
-      font-size: 0.9rem; 
-      font-weight: 700; 
-      letter-spacing: -0.01em; 
-    }
-    
-    .nav-links { 
-      display: flex; 
-      gap: 36px; 
-      list-style: none; 
-    }
-    
-    .nav-links a { 
-      color: var(--text2); 
-      text-decoration: none; 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.72rem; 
-      font-weight: 500; 
-      letter-spacing: 0.04em; 
-      transition: color 0.15s; 
-    }
-    
-    .nav-links a:hover { 
-      color: var(--text); 
-    }
-    
-    .nav-right { 
-      display: flex; 
-      align-items: center; 
-      gap: 10px; 
-    }
-    
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+    .nav-logo img { width: 28px; height: 28px; object-fit: contain; }
+    .nav-logo-text { font-size: 0.9rem; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em; transition: color 0.15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
     .nav-discord {
-      display: flex; 
-      align-items: center; 
-      gap: 6px;
-      background: transparent; 
-      border: 1px solid var(--border2);
-      color: var(--text2); 
-      padding: 7px 16px; 
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.7rem; 
-      font-weight: 500;
-      cursor: pointer; 
-      text-decoration: none; 
-      transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--text2); padding: 7px 16px; border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: all 0.15s;
     }
-    
-    .nav-discord:hover { 
-      color: var(--text); 
-      border-color: var(--blue2); 
-    }
-    
+    .nav-discord:hover { color: var(--text); border-color: var(--blue2); }
     .nav-cta {
-      background: var(--blue); 
-      color: #fff; 
-      border: none;
-      padding: 8px 22px; 
-      border-radius: 6px;
-      font-family: 'Syne', sans-serif; 
-      font-size: 0.78rem; 
-      font-weight: 700;
-      cursor: pointer; 
-      text-decoration: none; 
-      transition: all 0.2s;
+      background: var(--blue); color: #fff; border: none;
+      padding: 8px 22px; border-radius: 6px;
+      font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
       box-shadow: 0 0 24px rgba(30,100,255,0.35);
     }
-    
-    .nav-cta:hover { 
-      box-shadow: 0 0 36px rgba(30,100,255,0.55); 
-      transform: translateY(-1px); 
-    }
+    .nav-cta:hover { box-shadow: 0 0 36px rgba(30,100,255,0.55); transform: translateY(-1px); }
 
-    /* Hero section layout */
-    #home { 
-      min-height: 100vh; 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      align-items: center; 
-      gap: 48px; 
-      padding: 100px 80px 60px; 
-      max-width: 1280px; 
-      margin: 0 auto; 
-    }
-    
-    @media (max-width: 900px) { 
-      #home { 
-        grid-template-columns: 1fr; 
-        padding: 100px 28px 60px; 
-      } 
-    }
-    
+    /* hero */
+    #home { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; padding: 100px 80px 60px; max-width: 1280px; margin: 0 auto; }
+    @media (max-width: 900px) { #home { grid-template-columns: 1fr; padding: 100px 28px 60px; } }
     .hero-eyebrow {
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.65rem;
-      letter-spacing: 0.12em; 
-      color: var(--blue2); 
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.12em; color: var(--blue2); text-transform: uppercase;
       margin-bottom: 24px;
-      background: rgba(30,100,255,0.07); 
-      border: 1px solid var(--border2);
-      padding: 6px 14px; 
-      border-radius: 4px;
+      background: rgba(30,100,255,0.07); border: 1px solid var(--border2);
+      padding: 6px 14px; border-radius: 4px;
     }
-    
-    /* Pulsing dot animation for the eyebrow badge */
-    .hero-eyebrow::before { 
-      content: ''; 
-      width: 5px; 
-      height: 5px; 
-      border-radius: 50%; 
-      background: var(--blue); 
-      box-shadow: 0 0 8px var(--blue); 
-      animation: pulse 2s infinite; 
-    }
-    
-    @keyframes pulse { 
-      0%, 100% { opacity: 1; } 
-      50% { opacity: 0.4; } 
-    }
-    
-    .hero-title { 
-      font-size: clamp(2.8rem, 5.5vw, 4.8rem); 
-      font-weight: 800; 
-      line-height: 1.02; 
-      letter-spacing: -0.04em; 
-      margin-bottom: 20px; 
-    }
-    
-    .hero-title em { 
-      font-style: normal; 
-      background: linear-gradient(135deg, var(--blue) 0%, var(--blue3) 100%); 
-      -webkit-background-clip: text; 
-      background-clip: text; 
-      color: transparent; 
-    }
-    
-    .hero-sub { 
-      color: var(--text2); 
-      font-size: 0.95rem; 
-      line-height: 1.75; 
-      max-width: 400px; 
-      margin-bottom: 36px; 
-      font-family: 'JetBrains Mono', monospace; 
-    }
-    
-    .hero-btns { 
-      display: flex; 
-      gap: 12px; 
-      flex-wrap: wrap; 
-      margin-bottom: 52px; 
-    }
-    
-    .btn-primary { 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px; 
-      background: var(--blue); 
-      color: #fff; 
-      padding: 13px 28px; 
-      border-radius: 8px; 
-      font-family: 'Syne', sans-serif; 
-      font-size: 0.85rem; 
-      font-weight: 700; 
-      text-decoration: none; 
-      transition: all 0.2s; 
-      box-shadow: 0 0 28px rgba(30,100,255,0.38); 
-    }
-    
-    .btn-primary:hover { 
-      transform: translateY(-2px); 
-      box-shadow: 0 0 44px rgba(30,100,255,0.55); 
-    }
-    
-    .btn-secondary { 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px; 
-      background: transparent; 
-      color: var(--text2); 
-      padding: 13px 28px; 
-      border-radius: 8px; 
-      border: 1px solid var(--border2); 
-      font-family: 'Syne', sans-serif; 
-      font-size: 0.85rem; 
-      font-weight: 600; 
-      text-decoration: none; 
-      transition: all 0.2s; 
-    }
-    
-    .btn-secondary:hover { 
-      color: var(--text); 
-      border-color: var(--blue2); 
-    }
-    
-    .hero-stats { 
-      display: flex; 
-      gap: 36px; 
-    }
-    
-    .hero-stat-val { 
-      font-size: 1.7rem; 
-      font-weight: 800; 
-      letter-spacing: -0.04em; 
-      color: var(--text); 
-      font-family: 'JetBrains Mono', monospace; 
-    }
-    
-    .hero-stat-label { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      letter-spacing: 0.1em; 
-      color: var(--text3); 
-      text-transform: uppercase; 
-      margin-top: 2px; 
-    }
-    
-    .hero-stat-div { 
-      width: 1px; 
-      background: var(--border2); 
-    }
-    
-    .hero-right { 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-    }
-    
-    @media (max-width: 900px) { 
-      .hero-right { 
-        display: none; 
-      } 
-    }
+    .hero-eyebrow::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 8px var(--blue); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .hero-title { font-size: clamp(2.8rem, 5.5vw, 4.8rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.04em; margin-bottom: 20px; }
+    .hero-title em { font-style: normal; background: linear-gradient(135deg, var(--blue) 0%, var(--blue3) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-sub { color: var(--text2); font-size: 0.95rem; line-height: 1.75; max-width: 400px; margin-bottom: 36px; font-family: 'JetBrains Mono', monospace; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; padding: 13px 28px; border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 28px rgba(30,100,255,0.38); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 44px rgba(30,100,255,0.55); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text2); padding: 13px 28px; border-radius: 8px; border: 1px solid var(--border2); font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+    .btn-secondary:hover { color: var(--text); border-color: var(--blue2); }
+    .hero-stats { display: flex; gap: 36px; }
+    .hero-stat-val { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text); font-family: 'JetBrains Mono', monospace; }
+    .hero-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; margin-top: 2px; }
+    .hero-stat-div { width: 1px; background: var(--border2); }
+    .hero-right { display: flex; justify-content: center; align-items: center; }
+    @media (max-width: 900px) { .hero-right { display: none; } }
 
-    /* Mock UI component - represents the config interface */
-    .menu-mock { 
-      width: 460px; 
-      background: #1a1a1a; 
-      border: 1px solid rgba(30,100,255,0.25); 
-      border-radius: 8px; 
-      overflow: hidden; 
-      box-shadow: 0 0 60px rgba(30,100,255,0.1), 0 24px 60px rgba(0,0,0,0.6); 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      color: #ccc; 
-    }
-    
-    .mock-titlebar { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 6px 12px; 
-      background: #111; 
-      border-bottom: 1px solid #333; 
-      color: #aaa; 
-      font-size: 0.6rem; 
-    }
-    
-    .mock-game-tag { 
-      color: var(--blue2); 
-      font-weight: 600; 
-    }
-    
-    .mock-tabs { 
-      display: flex; 
-      background: #111; 
-      border-bottom: 1px solid #333; 
-      overflow-x: auto; 
-    }
-    
-    .mock-tab { 
-      padding: 6px 12px; 
-      font-size: 0.6rem; 
-      color: #777; 
-      cursor: default; 
-      white-space: nowrap; 
-      margin: 4px 2px -1px; 
-    }
-    
-    .mock-tab.active { 
-      color: #eee; 
-      background: #1a1a1a; 
-      border-color: #444 #444 #1a1a1a; 
-      border-radius: 3px 3px 0 0; 
-    }
-    
-    .mock-body { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 0; 
-      padding: 8px; 
-    }
-    
-    .mock-col { 
-      padding: 0 6px; 
-    }
-    
-    .mock-col:first-child { 
-      border-right: 1px solid #333; 
-    }
-    
-    .mock-panel { 
-      border: 1px solid #3a3a3a; 
-      border-radius: 3px; 
-      overflow: hidden; 
-      margin-bottom: 0; 
-    }
-    
-    .mock-panel-title { 
-      text-align: center; 
-      padding: 4px 8px; 
-      background: #222; 
-      border-bottom: 1px solid #3a3a3a; 
-      color: #bbb; 
-      font-size: 0.58rem; 
-    }
-    
-    .mock-panel-tabs { 
-      display: flex; 
-      border-bottom: 1px solid #3a3a3a; 
-      background: #1e1e1e; 
-    }
-    
-    .mock-ptab { 
-      flex: 1; 
-      text-align: center; 
-      padding: 4px 6px; 
-      font-size: 0.57rem; 
-      color: #777; 
-    }
-    
-    .active-ptab { 
-      color: #ddd; 
-      border-bottom: 2px solid var(--blue); 
-    }
-    
-    .mock-row { 
-      display: flex; 
-      align-items: center; 
-      gap: 5px; 
-      padding: 2px 6px; 
-      font-size: 0.58rem; 
-      color: #bbb; 
-    }
-    
-    .mock-chk { 
-      width: 10px; 
-      height: 10px; 
-      border: 1px solid #555; 
-      border-radius: 1px; 
-      flex-shrink: 0; 
-      display: inline-block; 
-    }
-    
-    .mock-chk.filled { 
-      background: var(--blue); 
-      border-color: var(--blue); 
-    }
-    
-    .mock-fov-boxes { 
-      display: flex; 
-      gap: 3px; 
-      margin-left: auto; 
-    }
-    
-    .mock-fov-boxes span { 
-      width: 16px; 
-      height: 10px; 
-      background: #444; 
-      border-radius: 1px; 
-      display: inline-block; 
-    }
-    
-    .mock-slider-row { 
-      padding: 3px 6px 1px; 
-      font-size: 0.56rem; 
-      color: #999; 
-    }
-    
-    .highlight-row { 
-      background: var(--blue); 
-      color: #fff; 
-      font-weight: 600; 
-      padding: 2px 6px; 
-      margin: 2px 0; 
-    }
-    
-    .mock-slider { 
-      height: 5px; 
-      background: #333; 
-      margin: 1px 6px 4px; 
-      border-radius: 2px; 
-      overflow: hidden; 
-    }
-    
-    .mock-slider-fill { 
-      height: 100%; 
-      border-radius: 2px; 
-      background: var(--blue); 
-    }
-    
-    .mock-split-row { 
-      gap: 4px; 
-    }
-    
-    .mock-split-pill { 
-      flex: 1; 
-      text-align: center; 
-      padding: 2px 4px; 
-      background: #333; 
-      border-radius: 2px; 
-      font-size: 0.55rem; 
-      color: #888; 
-    }
-    
-    .active-pill { 
-      background: var(--blue); 
-      color: #fff; 
-    }
-    
-    .mock-dropdown-label { 
-      padding: 3px 6px 1px; 
-      font-size: 0.55rem; 
-      color: #777; 
-    }
-    
-    .mock-dropdown { 
-      display: flex; 
-      justify-content: space-between; 
-      margin: 0 6px 4px; 
-      padding: 3px 6px; 
-      background: #222; 
-      border: 1px solid #3a3a3a; 
-      border-radius: 2px; 
-      font-size: 0.56rem; 
-      color: #bbb; 
-    }
+    /* mock ui */
+    .menu-mock { width: 460px; background: #1a1a1a; border: 1px solid rgba(30,100,255,0.25); border-radius: 8px; overflow: hidden; box-shadow: 0 0 60px rgba(30,100,255,0.1), 0 24px 60px rgba(0,0,0,0.6); font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: #ccc; }
+    .mock-titlebar { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #111; border-bottom: 1px solid #333; color: #aaa; font-size: 0.6rem; }
+    .mock-game-tag { color: var(--blue2); font-weight: 600; }
+    .mock-tabs { display: flex; background: #111; border-bottom: 1px solid #333; overflow-x: auto; }
+    .mock-tab { padding: 6px 12px; font-size: 0.6rem; color: #777; cursor: default; white-space: nowrap; margin: 4px 2px -1px; }
+    .mock-tab.active { color: #eee; background: #1a1a1a; border-color: #444 #444 #1a1a1a; border-radius: 3px 3px 0 0; }
+    .mock-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 8px; }
+    .mock-col { padding: 0 6px; }
+    .mock-col:first-child { border-right: 1px solid #333; }
+    .mock-panel { border: 1px solid #3a3a3a; border-radius: 3px; overflow: hidden; margin-bottom: 0; }
+    .mock-panel-title { text-align: center; padding: 4px 8px; background: #222; border-bottom: 1px solid #3a3a3a; color: #bbb; font-size: 0.58rem; }
+    .mock-panel-tabs { display: flex; border-bottom: 1px solid #3a3a3a; background: #1e1e1e; }
+    .mock-ptab { flex: 1; text-align: center; padding: 4px 6px; font-size: 0.57rem; color: #777; }
+    .active-ptab { color: #ddd; border-bottom: 2px solid var(--blue); }
+    .mock-row { display: flex; align-items: center; gap: 5px; padding: 2px 6px; font-size: 0.58rem; color: #bbb; }
+    .mock-chk { width: 10px; height: 10px; border: 1px solid #555; border-radius: 1px; flex-shrink: 0; display: inline-block; }
+    .mock-chk.filled { background: var(--blue); border-color: var(--blue); }
+    .mock-fov-boxes { display: flex; gap: 3px; margin-left: auto; }
+    .mock-fov-boxes span { width: 16px; height: 10px; background: #444; border-radius: 1px; display: inline-block; }
+    .mock-slider-row { padding: 3px 6px 1px; font-size: 0.56rem; color: #999; }
+    .highlight-row { background: var(--blue); color: #fff; font-weight: 600; padding: 2px 6px; margin: 2px 0; }
+    .mock-slider { height: 5px; background: #333; margin: 1px 6px 4px; border-radius: 2px; overflow: hidden; }
+    .mock-slider-fill { height: 100%; border-radius: 2px; background: var(--blue); }
+    .mock-split-row { gap: 4px; }
+    .mock-split-pill { flex: 1; text-align: center; padding: 2px 4px; background: #333; border-radius: 2px; font-size: 0.55rem; color: #888; }
+    .active-pill { background: var(--blue); color: #fff; }
+    .mock-dropdown-label { padding: 3px 6px 1px; font-size: 0.55rem; color: #777; }
+    .mock-dropdown { display: flex; justify-content: space-between; margin: 0 6px 4px; padding: 3px 6px; background: #222; border: 1px solid #3a3a3a; border-radius: 2px; font-size: 0.56rem; color: #bbb; }
 
-    /* Section dividers and layout */
-    .divider { 
-      height: 1px; 
-      background: var(--border); 
-      max-width: 1280px; 
-      margin: 0 auto; 
-    }
-    
-    .section { 
-      padding: 90px 48px; 
-    }
-    
-    .section-inner { 
-      max-width: 1280px; 
-      margin: 0 auto; 
-    }
-    
-    .section-label { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      letter-spacing: 0.14em; 
-      color: var(--blue2); 
-      text-transform: uppercase; 
-      margin-bottom: 10px; 
-    }
-    
-    .section-title { 
-      font-size: clamp(1.7rem, 3vw, 2.4rem); 
-      font-weight: 800; 
-      letter-spacing: -0.03em; 
-      margin-bottom: 12px; 
-    }
-    
-    .section-sub { 
-      color: var(--text2); 
-      font-size: 0.88rem; 
-      line-height: 1.7; 
-      margin-bottom: 44px; 
-      max-width: 500px; 
-      font-family: 'JetBrains Mono', monospace; 
-    }
+    /* sections */
+    .divider { height: 1px; background: var(--border); max-width: 1280px; margin: 0 auto; }
+    .section { padding: 90px 48px; }
+    .section-inner { max-width: 1280px; margin: 0 auto; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; color: var(--blue2); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .section-sub { color: var(--text2); font-size: 0.88rem; line-height: 1.7; margin-bottom: 44px; max-width: 500px; font-family: 'JetBrains Mono', monospace; }
 
-    /* Feature cards grid */
-    .feat-header { 
-      text-align: center; 
-      margin-bottom: 56px; 
-    }
-    
-    .feat-header h2 { 
-      font-size: clamp(1.9rem, 3.5vw, 2.8rem); 
-      font-weight: 800; 
-      letter-spacing: -0.04em; 
-    }
-    
-    .feat-header h2 em { 
-      font-style: normal; 
-      color: var(--blue2); 
-    }
-    
-    .feat-grid { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 1px; 
-      background: var(--border); 
-      border: 1px solid var(--border); 
-      border-radius: 12px; 
-      overflow: hidden; 
-    }
-    
-    @media (max-width: 860px) { 
-      .feat-grid { 
-        grid-template-columns: repeat(2, 1fr); 
-      } 
-    }
-    
-    @media (max-width: 520px) { 
-      .feat-grid { 
-        grid-template-columns: 1fr; 
-      } 
-    }
-    
-    .feat-card { 
-      background: var(--bg2); 
-      padding: 32px 28px; 
-      transition: background 0.2s; 
-      position: relative; 
-      overflow: hidden; 
-    }
-    
-    .feat-card:hover { 
-      background: var(--surface); 
-    }
-    
-    .feat-icon-wrap { 
-      width: 48px; 
-      height: 48px; 
-      border-radius: 10px; 
-      background: var(--blue-dim); 
-      border: 1px solid var(--border2); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      margin-bottom: 20px; 
-      font-size: 1.2rem; 
-    }
-    
-    .feat-title { 
-      font-size: 1rem; 
-      font-weight: 700; 
-      margin-bottom: 10px; 
-    }
-    
-    .feat-desc { 
-      color: var(--text2); 
-      font-size: 0.82rem; 
-      line-height: 1.65; 
-      font-family: 'JetBrains Mono', monospace; 
-    }
+    /* feature grid */
+    .feat-header { text-align: center; margin-bottom: 56px; }
+    .feat-header h2 { font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.04em; }
+    .feat-header h2 em { font-style: normal; color: var(--blue2); }
+    .feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    @media (max-width: 860px) { .feat-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-card { background: var(--bg2); padding: 32px 28px; transition: background 0.2s; position: relative; overflow: hidden; }
+    .feat-card:hover { background: var(--surface); }
+    .feat-icon-wrap { width: 48px; height: 48px; border-radius: 10px; background: var(--blue-dim); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 1.2rem; }
+    .feat-title { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .feat-desc { color: var(--text2); font-size: 0.82rem; line-height: 1.65; font-family: 'JetBrains Mono', monospace; }
 
-    /* Product card grid */
-    .product-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); 
-      gap: 14px; 
-    }
-    
-    .card { 
-      background: var(--surface); 
-      border: 1px solid var(--border); 
-      border-radius: 12px; 
-      overflow: hidden; 
-      cursor: pointer; 
-      transition: all 0.2s; 
-      display: flex; 
-      flex-direction: column; 
-    }
-    
-    .card:hover { 
-      border-color: var(--border2); 
-      transform: translateY(-3px); 
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(30,100,255,0.08); 
-    }
-    
-    .card.oos { 
-      opacity: 0.45; 
-      cursor: default; 
-    }
-    
-    .card.oos:hover { 
-      transform: none; 
-      box-shadow: none; 
-    }
-    
-    .card-thumb { 
-      aspect-ratio: 16/9; 
-      background: var(--bg2); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      position: relative; 
-      overflow: hidden; 
-      border-bottom: 1px solid var(--border); 
-    }
-    
-    .card-thumb::before { 
-      content: ''; 
-      position: absolute; 
-      inset: 0; 
-      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(30,100,255,0.1) 0%, transparent 70%); 
-    }
-    
-    .card-abbr { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 1.6rem; 
-      font-weight: 600; 
-      color: rgba(30,100,255,0.35); 
-      letter-spacing: -0.05em; 
-      position: relative; 
-      z-index: 1; 
-    }
-    
-    .card-body { 
-      padding: 14px 16px 8px; 
-      flex: 1; 
-    }
-    
-    .card-name { 
-      font-size: 0.88rem; 
-      font-weight: 700; 
-      margin-bottom: 6px; 
-    }
-    
-    .card-badge { 
-      display: inline-block; 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.58rem; 
-      letter-spacing: 0.1em; 
-      color: var(--blue2); 
-      text-transform: uppercase; 
-      background: var(--blue-dim); 
-      border: 1px solid var(--border2); 
-      padding: 2px 8px; 
-      border-radius: 3px; 
-    }
-    
-    .lua-tag { 
-      display: inline-block; 
-      margin-top: 6px; 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.58rem; 
-      letter-spacing: 0.08em; 
-      text-transform: uppercase; 
-      padding: 2px 8px; 
-      border-radius: 3px; 
-    }
-    
-    .lua-tag.available { 
-      color: var(--green); 
-      background: rgba(0,232,122,0.08); 
-      border: 1px solid rgba(0,232,122,0.2); 
-    }
-    
-    .lua-tag.soon { 
-      color: var(--text3); 
-      background: rgba(255,255,255,0.04); 
-      border: 1px solid var(--border); 
-    }
-    
-    .card-footer { 
-      padding: 0 16px 16px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-    }
-    
-    .price-main { 
-      font-size: 1.1rem; 
-      font-weight: 800; 
-      font-family: 'JetBrains Mono', monospace; 
-    }
-    
-    .price-old { 
-      font-size: 0.72rem; 
-      color: var(--text3); 
-      text-decoration: line-through; 
-      margin-left: 5px; 
-    }
-    
-    .stock-in { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.6rem; 
-      color: var(--green); 
-    }
-    
-    .stock-out { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.6rem; 
-      color: var(--text3); 
-    }
-    
-    .card-btn { 
-      width: calc(100% - 32px); 
-      margin: 0 16px 14px; 
-      padding: 10px; 
-      border-radius: 7px; 
-      font-family: 'Syne', sans-serif; 
-      font-size: 0.78rem; 
-      font-weight: 700; 
-      cursor: pointer; 
-      border: none; 
-      transition: all 0.18s; 
-      background: var(--blue); 
-      color: #fff; 
-    }
-    
-    .card-btn:hover { 
-      opacity: 0.85; 
-    }
-    
-    .card-btn:disabled { 
-      background: var(--surface2); 
-      color: var(--text3); 
-      cursor: default; 
-    }
-    
-    .lua-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
-      gap: 14px; 
-    }
+    /* product cards */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; }
+    .card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(30,100,255,0.08); }
+    .card.oos { opacity: 0.45; cursor: default; }
+    .card.oos:hover { transform: none; box-shadow: none; }
+    .card-thumb { aspect-ratio: 16/9; background: var(--bg2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .card-thumb::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(30,100,255,0.1) 0%, transparent 70%); }
+    .card-abbr { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 600; color: rgba(30,100,255,0.35); letter-spacing: -0.05em; position: relative; z-index: 1; }
+    .card-body { padding: 14px 16px 8px; flex: 1; }
+    .card-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+    .card-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--blue2); text-transform: uppercase; background: var(--blue-dim); border: 1px solid var(--border2); padding: 2px 8px; border-radius: 3px; }
+    .lua-tag { display: inline-block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+    .lua-tag.available { color: var(--green); background: rgba(0,232,122,0.08); border: 1px solid rgba(0,232,122,0.2); }
+    .lua-tag.soon { color: var(--text3); background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+    .card-footer { padding: 0 16px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .price-main { font-size: 1.1rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .price-old { font-size: 0.72rem; color: var(--text3); text-decoration: line-through; margin-left: 5px; }
+    .stock-in { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--green); }
+    .stock-out { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); }
+    .card-btn { width: calc(100% - 32px); margin: 0 16px 14px; padding: 10px; border-radius: 7px; font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.18s; background: var(--blue); color: #fff; }
+    .card-btn:hover { opacity: 0.85; }
+    .card-btn:disabled { background: var(--surface2); color: var(--text3); cursor: default; }
+    .lua-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 
-    /* Modal overlay and content */
-    .overlay { 
-      position: fixed; 
-      inset: 0; 
-      z-index: 200; 
-      background: rgba(2,4,8,0.85); 
-      backdrop-filter: blur(10px); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      opacity: 0; 
-      pointer-events: none; 
-      transition: opacity 0.22s; 
-      padding: 24px; 
-    }
-    
-    .overlay.open { 
-      opacity: 1; 
-      pointer-events: all; 
-    }
-    
-    .modal { 
-      background: var(--surface); 
-      border: 1px solid var(--border2); 
-      border-radius: 14px; 
-      width: 100%; 
-      max-width: 820px; 
-      max-height: 88vh; 
-      overflow-y: auto; 
-      box-shadow: 0 32px 80px rgba(0,0,0,0.7); 
-      position: relative; 
-      transform: translateY(16px); 
-      transition: transform 0.22s; 
-    }
-    
-    .overlay.open .modal { 
-      transform: translateY(0); 
-    }
-    
-    .modal-x { 
-      position: sticky; 
-      top: 14px; 
-      float: right; 
-      margin: 14px 14px 0 0; 
-      background: var(--surface2); 
-      border: 1px solid var(--border2); 
-      color: var(--text2); 
-      width: 30px; 
-      height: 30px; 
-      border-radius: 6px; 
-      font-size: 0.75rem; 
-      cursor: pointer; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 1; 
-    }
-    
-    .modal-x:hover { 
-      color: var(--text); 
-      border-color: var(--blue2); 
-    }
-    
-    .modal-layout { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      padding: 28px; 
-      gap: 32px; 
-    }
-    
-    @media (max-width: 640px) { 
-      .modal-layout { 
-        grid-template-columns: 1fr; 
-      } 
-    }
-    
-    .modal-img { 
-      aspect-ratio: 4/3; 
-      background: var(--bg2); 
-      border-radius: 10px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      border: 1px solid var(--border); 
-      margin-bottom: 18px; 
-      position: relative; 
-      overflow: hidden; 
-    }
-    
-    .modal-img-abbr { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 2.8rem; 
-      font-weight: 600; 
-      color: rgba(30,100,255,0.4); 
-      letter-spacing: -0.05em; 
-      position: relative; 
-    }
-    
-    .modal-prod-name { 
-      font-size: 1.1rem; 
-      font-weight: 800; 
-      margin-bottom: 10px; 
-    }
-    
-    .modal-overview { 
-      list-style: none; 
-      margin-bottom: 18px; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 7px; 
-    }
-    
-    .modal-overview li { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.74rem; 
-      color: var(--text2); 
-      padding-left: 16px; 
-      position: relative; 
-      line-height: 1.5; 
-    }
-    
-    .modal-overview li::before { 
-      content: '—'; 
-      position: absolute; 
-      left: 0; 
-      color: var(--blue); 
-    }
-    
-    .modal-perks-box { 
-      background: var(--bg2); 
-      border: 1px solid var(--border); 
-      border-radius: 8px; 
-      padding: 14px 16px; 
-    }
-    
-    .modal-perks-label { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      letter-spacing: 0.1em; 
-      text-transform: uppercase; 
-      color: var(--text3); 
-      margin-bottom: 10px; 
-    }
-    
-    .perk-list { 
-      list-style: none; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 7px; 
-    }
-    
-    .perk-list li { 
-      display: flex; 
-      align-items: flex-start; 
-      gap: 8px; 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.74rem; 
-      color: var(--text2); 
-      line-height: 1.45; 
-    }
-    
-    .perk-list li::before { 
-      content: '✓'; 
-      color: var(--blue2); 
-      font-size: 0.75rem; 
-      flex-shrink: 0; 
-      margin-top: 1px; 
-    }
-    
-    .modal-status-row { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      margin-bottom: 10px; 
-    }
-    
-    .dot-green { 
-      width: 7px; 
-      height: 7px; 
-      border-radius: 50%; 
-      background: var(--green); 
-      box-shadow: 0 0 7px var(--green); 
-    }
-    
-    .dot-red { 
-      width: 7px; 
-      height: 7px; 
-      border-radius: 50%; 
-      background: var(--red); 
-    }
-    
-    .s-green { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.7rem; 
-      color: var(--green); 
-    }
-    
-    .modal-price-big { 
-      font-size: 2.2rem; 
-      font-weight: 800; 
-      letter-spacing: -0.04em; 
-      font-family: 'JetBrains Mono', monospace; 
-      margin-bottom: 24px; 
-    }
-    
-    .modal-price-old { 
-      font-size: 1rem; 
-      color: var(--text3); 
-      text-decoration: line-through; 
-      margin-left: 10px; 
-    }
-    
-    .variant-row { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 12px 14px; 
-      border-radius: 8px; 
-      border: 1px solid var(--border); 
-      background: var(--bg2); 
-      cursor: pointer; 
-      transition: all 0.15s; 
-      margin-bottom: 8px; 
-    }
-    
-    .variant-row.selected { 
-      border-color: var(--blue); 
-      background: rgba(30,100,255,0.06); 
-    }
-    
-    .variant-row.vdis { 
-      opacity: 0.4; 
-      cursor: default; 
-    }
-    
-    .variant-name { 
-      font-size: 0.82rem; 
-      font-weight: 700; 
-      margin-bottom: 3px; 
-    }
-    
-    .buy-btn { 
-      width: 100%; 
-      padding: 14px; 
-      border-radius: 8px; 
-      background: var(--blue); 
-      color: #fff; 
-      border: none; 
-      font-family: 'Syne', sans-serif; 
-      font-size: 0.88rem; 
-      font-weight: 800; 
-      cursor: pointer; 
-      transition: all 0.2s; 
-      box-shadow: 0 0 24px rgba(30,100,255,0.35); 
-    }
-    
-    .buy-btn:hover { 
-      box-shadow: 0 0 40px rgba(30,100,255,0.55); 
-      transform: translateY(-1px); 
-    }
-    
-    .buy-btn:disabled { 
-      background: var(--surface2); 
-      color: var(--text3); 
-      cursor: default; 
-      box-shadow: none; 
-    }
+    /* modal */
+    .overlay { position: fixed; inset: 0; z-index: 200; background: rgba(2,4,8,0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.22s; padding: 24px; }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; width: 100%; max-width: 820px; max-height: 88vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.7); position: relative; transform: translateY(16px); transition: transform 0.22s; }
+    .overlay.open .modal { transform: translateY(0); }
+    .modal-x { position: sticky; top: 14px; float: right; margin: 14px 14px 0 0; background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); width: 30px; height: 30px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1; }
+    .modal-x:hover { color: var(--text); border-color: var(--blue2); }
+    .modal-layout { display: grid; grid-template-columns: 1fr 1fr; padding: 28px; gap: 32px; }
+    @media (max-width: 640px) { .modal-layout { grid-template-columns: 1fr; } }
+    .modal-img { aspect-ratio: 4/3; background: var(--bg2); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); margin-bottom: 18px; position: relative; overflow: hidden; }
+    .modal-img-abbr { font-family: 'JetBrains Mono', monospace; font-size: 2.8rem; font-weight: 600; color: rgba(30,100,255,0.4); letter-spacing: -0.05em; position: relative; }
+    .modal-prod-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+    .modal-overview { list-style: none; margin-bottom: 18px; display: flex; flex-direction: column; gap: 7px; }
+    .modal-overview li { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text2); padding-left: 16px; position: relative; line-height: 1.5; }
+    .modal-overview li::before { content: '—'; position: absolute; left: 0; color: var(--blue); }
+    .modal-perks-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+    .modal-perks-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+    .perk-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .perk-list li { display: flex; align-items: flex-start; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text2); line-height: 1.45; }
+    .perk-list li::before { content: '✓'; color: var(--blue2); font-size: 0.75rem; flex-shrink: 0; margin-top: 1px; }
+    .modal-status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .dot-green { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+    .dot-red { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+    .s-green { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--green); }
+    .modal-price-big { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; font-family: 'JetBrains Mono', monospace; margin-bottom: 24px; }
+    .modal-price-old { font-size: 1rem; color: var(--text3); text-decoration: line-through; margin-left: 10px; }
+    .variant-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); cursor: pointer; transition: all 0.15s; margin-bottom: 8px; }
+    .variant-row.selected { border-color: var(--blue); background: rgba(30,100,255,0.06); }
+    .variant-row.vdis { opacity: 0.4; cursor: default; }
+    .variant-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
+    .buy-btn { width: 100%; padding: 14px; border-radius: 8px; background: var(--blue); color: #fff; border: none; font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 24px rgba(30,100,255,0.35); }
+    .buy-btn:hover { box-shadow: 0 0 40px rgba(30,100,255,0.55); transform: translateY(-1px); }
+    .buy-btn:disabled { background: var(--surface2); color: var(--text3); cursor: default; box-shadow: none; }
 
-    /* Footer section */
-    .footer-wrap { 
-      border-top: 1px solid var(--border); 
-      padding: 60px 48px 36px; 
-    }
-    
-    .footer-inner { 
-      max-width: 1280px; 
-      margin: 0 auto; 
-      display: grid; 
-      grid-template-columns: 1.6fr 1fr 1fr 1fr; 
-      gap: 48px; 
-      margin-bottom: 48px; 
-    }
-    
-    @media (max-width: 760px) { 
-      .footer-inner { 
-        grid-template-columns: 1fr 1fr; 
-      } 
-    }
-    
-    .footer-logo { 
-      display: flex; 
-      align-items: center; 
-      gap: 9px; 
-      margin-bottom: 14px; 
-      text-decoration: none; 
-      color: var(--text); 
-    }
-    
-    .footer-logo img { 
-      width: 26px; 
-    }
-    
-    .footer-tagline { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.74rem; 
-      color: var(--text2); 
-      line-height: 1.7; 
-      max-width: 220px; 
-    }
-    
-    .footer-col-title { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      letter-spacing: 0.12em; 
-      text-transform: uppercase; 
-      color: var(--text3); 
-      margin-bottom: 16px; 
-    }
-    
-    .footer-col-links { 
-      list-style: none; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 11px; 
-    }
-    
-    .footer-col-links a { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.74rem; 
-      color: var(--text2); 
-      text-decoration: none; 
-      transition: color 0.15s; 
-    }
-    
-    .footer-col-links a:hover { 
-      color: var(--text); 
-    }
-    
-    .footer-bottom { 
-      max-width: 1280px; 
-      margin: 0 auto; 
-      padding-top: 24px; 
-      border-top: 1px solid var(--border); 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      flex-wrap: wrap; 
-      gap: 10px; 
-    }
-    
-    .footer-copy, .footer-note { 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.62rem; 
-      color: var(--text3); 
-    }
-    
-    /* Toast notification */
-    .toast { 
-      position: fixed; 
-      bottom: 24px; 
-      right: 24px; 
-      background: var(--surface); 
-      border: 1px solid var(--border2); 
-      border-radius: 8px; 
-      padding: 12px 20px; 
-      font-family: 'JetBrains Mono', monospace; 
-      font-size: 0.76rem; 
-      font-weight: 600; 
-      z-index: 9999; 
-      transform: translateY(60px); 
-      opacity: 0; 
-      transition: transform 0.22s, opacity 0.22s; 
-      pointer-events: none; 
-      box-shadow: 0 8px 28px rgba(0,0,0,0.5); 
-    }
-    
-    .toast.show { 
-      transform: translateY(0); 
-      opacity: 1; 
-    }
-    
-    /* Scroll reveal animation */
-    .reveal { 
-      opacity: 0; 
-      transform: translateY(22px); 
-      transition: opacity 0.5s ease, transform 0.5s ease; 
-    }
-    
-    .reveal.visible { 
-      opacity: 1; 
-      transform: none; 
-    }
+    /* footer */
+    .footer-wrap { border-top: 1px solid var(--border); padding: 60px 48px 36px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    @media (max-width: 760px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+    .footer-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; text-decoration: none; color: var(--text); }
+    .footer-logo img { width: 26px; }
+    .footer-tagline { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text2); line-height: 1.7; max-width: 220px; }
+    .footer-col-title { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-col-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text2); text-decoration: none; transition: color 0.15s; }
+    .footer-col-links a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1280px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .footer-copy, .footer-note { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text3); }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; padding: 12px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 600; z-index: 9999; transform: translateY(60px); opacity: 0; transition: transform 0.22s, opacity 0.22s; pointer-events: none; box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
 <div class="mesh"></div>
-
 <nav>
-  <a href="#home" class="nav-logo">
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e64ff'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="Cemetry Configs">
-    <span class="nav-logo-text">Cemetry Configs</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#ue-section">UE V2</a></li>
-    <li><a href="#kj-section">Kiciahook</a></li>
-    <li><a href="#lua-section">cemetry.lua</a></li>
-  </ul>
-  <div class="nav-right">
-    <a href="https://discord.gg/GqcKyb3hNS" target="_blank" class="nav-discord">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
-      </svg> 
-      Discord
-    </a>
-    <a href="#ue-section" class="nav-cta">Purchase</a>
-  </div>
+  <a href="#home" class="nav-logo"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e64ff'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="Cemetry Configs"><span class="nav-logo-text">Cemetry Configs</span></a>
+  <ul class="nav-links"><li><a href="#features">Features</a></li><li><a href="#ue-section">UE V2</a></li><li><a href="#kj-section">Kiciahook</a></li><li><a href="#lua-section">cemetry.lua</a></li></ul>
+  <div class="nav-right"><a href="https://discord.gg/GqcKyb3hNS" target="_blank" class="nav-discord"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg> Discord</a><a href="#ue-section" class="nav-cta">Purchase</a></div>
 </nav>
-
 <div class="page">
-  <div id="home">
-    <div class="hero-left">
-      <div class="hero-eyebrow">Rivals · Configs · Scripts</div>
-      <h1 class="hero-title">Dominate<br>Your <em>Rivals</em></h1>
-      <p class="hero-sub">The most advanced configs on the market. Instant delivery, secure payments, support you can rely on.</p>
-      <div class="hero-btns">
-        <a href="#ue-section" class="btn-primary">Purchase Now →</a>
-        <a href="#features" class="btn-secondary">View Features</a>
-      </div>
-      <div class="hero-stats">
-        <div>
-          <div class="hero-stat-val">3,477</div>
-          <div class="hero-stat-label">Products Sold</div>
-        </div>
-        <div class="hero-stat-div"></div>
-        <div>
-          <div class="hero-stat-val">5.00★</div>
-          <div class="hero-stat-label">Product Rating</div>
-        </div>
-        <div class="hero-stat-div"></div>
-        <div>
-          <div class="hero-stat-val">24/7</div>
-          <div class="hero-stat-label">Support</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="menu-mock">
-        <div class="mock-titlebar">
-          <span>Unnamed Enhancements — discord.gg/enhancements</span>
-          <span class="mock-game-tag">Rivals</span>
-        </div>
-        <div class="mock-tabs">
-          <div class="mock-tab active">main</div>
-          <div class="mock-tab">esp</div>
-          <div class="mock-tab">rage</div>
-        </div>
-        <div class="mock-body">
-          <div class="mock-col">
-            <div class="mock-panel">
-              <div class="mock-panel-tabs">
-                <span class="mock-ptab active-ptab">aimbot</span>
-              </div>
-              <div class="mock-row">
-                <span class="mock-chk filled"></span>
-                <span>enabled</span>
-              </div>
-              <div class="mock-slider-row">
-                <span>hit chance: 100%</span>
-              </div>
-              <div class="mock-slider">
-                <div class="mock-slider-fill" style="width:100%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="mock-col">
-            <div class="mock-panel">
-              <div class="mock-panel-title">weapons</div>
-              <div class="mock-row">
-                <span class="mock-chk filled"></span>
-                <span>no spread</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <div id="home"><div class="hero-left"><div class="hero-eyebrow">Rivals · Configs · Scripts</div><h1 class="hero-title">Dominate<br>Your <em>Rivals</em></h1><p class="hero-sub">The most advanced configs on the market. Instant delivery, secure payments, support you can rely on.</p><div class="hero-btns"><a href="#ue-section" class="btn-primary">Purchase Now →</a><a href="#features" class="btn-secondary">View Features</a></div><div class="hero-stats"><div><div class="hero-stat-val">3,477</div><div class="hero-stat-label">Products Sold</div></div><div class="hero-stat-div"></div><div><div class="hero-stat-val">5.00★</div><div class="hero-stat-label">Product Rating</div></div><div class="hero-stat-div"></div><div><div class="hero-stat-val">24/7</div><div class="hero-stat-label">Support</div></div></div></div><div class="hero-right"><div class="menu-mock"><div class="mock-titlebar"><span>Unnamed Enhancements — discord.gg/enhancements</span><span class="mock-game-tag">Rivals</span></div><div class="mock-tabs"><div class="mock-tab active">main</div><div class="mock-tab">esp</div><div class="mock-tab">rage</div></div><div class="mock-body"><div class="mock-col"><div class="mock-panel"><div class="mock-panel-tabs"><span class="mock-ptab active-ptab">aimbot</span></div><div class="mock-row"><span class="mock-chk filled"></span><span>enabled</span></div><div class="mock-slider-row"><span>hit chance: 100%</span></div><div class="mock-slider"><div class="mock-slider-fill" style="width:100%"></div></div></div></div><div class="mock-col"><div class="mock-panel"><div class="mock-panel-title">weapons</div><div class="mock-row"><span class="mock-chk filled"></span><span>no spread</span></div></div></div></div></div></div></div>
   <div class="divider"></div>
-
-  <section class="section" id="features">
-    <div class="section-inner">
-      <div class="feat-header reveal">
-        <h2>Premium <em>Features</em></h2>
-        <p>Everything you need to be tuff like 6raveyard.</p>
-      </div>
-      <div class="feat-grid">
-        <div class="feat-card reveal">
-          <div class="feat-icon-wrap">🎯</div>
-          <div class="feat-title">Advanced Aimbot</div>
-          <div class="feat-desc">Highly configurable aim assistance with smooth tracking.</div>
-        </div>
-        <div class="feat-card reveal">
-          <div class="feat-icon-wrap">👁️</div>
-          <div class="feat-title">Crystal Visuals</div>
-          <div class="feat-desc">See enemies through walls with customizable ESP.</div>
-        </div>
-        <div class="feat-card reveal">
-          <div class="feat-icon-wrap">🛡️</div>
-          <div class="feat-title">0% Ban Rate</div>
-          <div class="feat-desc">Configs tuned to stay completely under the radar.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <section class="section" id="features"><div class="section-inner"><div class="feat-header reveal"><h2>Premium <em>Features</em></h2><p>Everything you need to be tuff like 6raveyard.</p></div><div class="feat-grid"><div class="feat-card reveal"><div class="feat-icon-wrap">🎯</div><div class="feat-title">Advanced Aimbot</div><div class="feat-desc">Highly configurable aim assistance with smooth tracking.</div></div><div class="feat-card reveal"><div class="feat-icon-wrap">👁️</div><div class="feat-title">Crystal Visuals</div><div class="feat-desc">See enemies through walls with customizable ESP.</div></div><div class="feat-card reveal"><div class="feat-icon-wrap">🛡️</div><div class="feat-title">0% Ban Rate</div><div class="feat-desc">Configs tuned to stay completely under the radar.</div></div></div></div></section>
   <div class="divider"></div>
-
-  <section class="section" id="ue-section">
-    <div class="section-inner">
-      <p class="section-label">Configs</p>
-      <h2 class="section-title" id="ue-title"></h2>
-      <p class="section-sub" id="ue-sub"></p>
-      <div class="product-grid" id="ue-grid"></div>
-    </div>
-  </section>
-
+  <section class="section" id="ue-section"><div class="section-inner"><p class="section-label">Configs</p><h2 class="section-title" id="ue-title"></h2><p class="section-sub" id="ue-sub"></p><div class="product-grid" id="ue-grid"></div></div></section>
   <div class="divider"></div>
-
-  <section class="section" id="kj-section">
-    <div class="section-inner">
-      <p class="section-label">Configs</p>
-      <h2 class="section-title" id="kj-title"></h2>
-      <p class="section-sub" id="kj-sub"></p>
-      <div class="product-grid" id="kj-grid"></div>
-    </div>
-  </section>
-
+  <section class="section" id="kj-section"><div class="section-inner"><p class="section-label">Configs</p><h2 class="section-title" id="kj-title"></h2><p class="section-sub" id="kj-sub"></p><div class="product-grid" id="kj-grid"></div></div></section>
   <div class="divider"></div>
-
-  <section class="section" id="lua-section">
-    <div class="section-inner">
-      <p class="section-label">Script</p>
-      <h2 class="section-title" id="lua-title"></h2>
-      <p class="section-sub" id="lua-sub"></p>
-      <div class="lua-grid" id="lua-grid"></div>
-    </div>
-  </section>
-
+  <section class="section" id="lua-section"><div class="section-inner"><p class="section-label">Script</p><h2 class="section-title" id="lua-title"></h2><p class="section-sub" id="lua-sub"></p><div class="lua-grid" id="lua-grid"></div></div></section>
   <div class="divider"></div>
-
-  <div class="footer-wrap">
-    <div class="footer-inner">
-      <div>
-        <a href="#home" class="footer-logo">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e64ff'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="logo">
-          <span class="footer-logo-text">Cemetry Configs</span>
-        </a>
-        <p class="footer-tagline">The #1 config experience for Rivals. Unmatched quality.</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Product</div>
-        <ul class="footer-col-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#ue-section">UE V2 Configs</a></li>
-          <li><a href="#kj-section">Kiciahook Configs</a></li>
-          <li><a href="#lua-section">cemetry.lua</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Support</div>
-        <ul class="footer-col-links">
-          <li><a href="https://discord.gg/GqcKyb3hNS" target="_blank">Discord Server</a></li>
-          <li><a href="https://cemetryconfigsontop.mysellauth.com" target="_blank">Sellauth Store</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Legal</div>
-        <ul class="footer-col-links">
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Cemetry Configs</span>
-      <span class="footer-note">After payment, join our discord server and create a ticket.</span>
-    </div>
-  </div>
+  <div class="footer-wrap"><div class="footer-inner"><div><a href="#home" class="footer-logo"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e64ff'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="logo"><span class="footer-logo-text">Cemetry Configs</span></a><p class="footer-tagline">The #1 config experience for Rivals. Unmatched quality.</p></div><div><div class="footer-col-title">Product</div><ul class="footer-col-links"><li><a href="#features">Features</a></li><li><a href="#ue-section">UE V2 Configs</a></li><li><a href="#kj-section">Kiciahook Configs</a></li><li><a href="#lua-section">cemetry.lua</a></li></ul></div><div><div class="footer-col-title">Support</div><ul class="footer-col-links"><li><a href="https://discord.gg/GqcKyb3hNS" target="_blank">Discord Server</a></li><li><a href="https://cemetryconfigsontop.mysellauth.com" target="_blank">Sellauth Store</a></li></ul></div><div><div class="footer-col-title">Legal</div><ul class="footer-col-links"><li><a href="#">Terms of Service</a></li><li><a href="#">Privacy Policy</a></li></ul></div></div><div class="footer-bottom"><span class="footer-copy">© 2026 Cemetry Configs</span><span class="footer-note">After payment, join our discord server and create a ticket.</span></div></div>
 </div>
-
-<div class="overlay" id="overlay">
-  <div class="modal" id="modal">
-    <button class="modal-x" onclick="closeModal()">✕</button>
-    <div class="modal-layout">
-      <div id="modalLeft"></div>
-      <div id="modalRight"></div>
-    </div>
-  </div>
-</div>
-
+<div class="overlay" id="overlay"><div class="modal" id="modal"><button class="modal-x" onclick="closeModal()">✕</button><div class="modal-layout"><div id="modalLeft"></div><div id="modalRight"></div></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-  // Product database - this holds all the config variants
+  // Complete product data
   const CEMETRY_FIGS = {
     products: [
-      { 
-        id: "ue-v2", 
-        section: "Unnamed Enhancements V2 Configs", 
-        name: "UE V2 Configs", 
-        badge: "Best Configs", 
-        abbr: "UE", 
-        overview: [
-          "The BEST Unnamed Enhancements V2 Configs",
-          "Adjustable Settings, Skin Changer"
-        ], 
-        variants: [
-          { 
-            name: "Legit Config", 
-            price: 4.97, 
-            oldPrice: 8.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/legit-config", 
-            perks: ["Best Aimbot for Closeting", "Toggleable ESP"] 
-          },
-          { 
-            name: "Sniper Config", 
-            price: 5.97, 
-            oldPrice: 10.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/sniper-config", 
-            perks: ["Best Triggerbot", "Swift Config"] 
-          },
-          { 
-            name: "Semi Rage Config", 
-            price: 8.97, 
-            oldPrice: 16.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/semi-rage", 
-            perks: ["Hard Aimbot", "Wins All Games"] 
-          },
-          { 
-            name: "Rage Config", 
-            price: 12.97, 
-            oldPrice: 24.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/rage-config", 
-            perks: ["Win HvH", "Anti Aim / Ragebot"] 
-          },
-          { 
-            name: "Config Bundle", 
-            price: 16.97, 
-            oldPrice: 32.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/bundle-config", 
-            perks: ["All 4 Configs", "Best Value"] 
-          }
-        ]
-      },
-      { 
-        id: "kj-premium", 
-        section: "Kiciahook V2 Configs", 
-        name: "Kiciahook V2 Configs", 
-        badge: "Best Configs", 
-        abbr: "KJ", 
-        overview: [
-          "The BEST Kiciahook Configs",
-          "Adjustable Settings"
-        ], 
-        variants: [
-          { 
-            name: "Legit Config", 
-            price: 3.97, 
-            oldPrice: 6.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/legit-config-kiciahook", 
-            perks: ["Best Aimbot", "Toggleable ESP"] 
-          },
-          { 
-            name: "Sniper Config", 
-            price: 5.97, 
-            oldPrice: 10.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/sniper-config-kiciahook", 
-            perks: ["Best Triggerbot", "Swift Config"] 
-          },
-          { 
-            name: "Semi Rage Config", 
-            price: 6.97, 
-            oldPrice: 12.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/semi-rage-config-kiciahook", 
-            perks: ["Hard Aimbot", "Wins All Games"] 
-          },
-          { 
-            name: "Rage Config", 
-            price: 7.97, 
-            oldPrice: 14.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/rage-config-kiciahook", 
-            perks: ["Win HvH", "Anti Aim / Orbit"] 
-          },
-          { 
-            name: "Config Bundle", 
-            price: 15.97, 
-            oldPrice: 30.00, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/bundle-config-kiciahook", 
-            perks: ["All 4 Configs", "Best Value"] 
-          }
-        ]
-      },
-      { 
-        id: "cemetry-lua", 
-        section: "cemetry.lua", 
-        name: "cemetry.lua", 
-        badge: "Rivals Script", 
-        abbr: "LUA", 
-        overview: [
-          "cemetry.lua — Rivals script",
-          "Lifetime access"
-        ], 
-        variants: [
-          { 
-            name: "Private Key", 
-            price: 10.00, 
-            oldPrice: null, 
-            inStock: true, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-private-key", 
-            perks: ["Private Key", "Available now", "Lifetime access"] 
-          },
-          { 
-            name: "Lifetime", 
-            price: 5.00, 
-            oldPrice: null, 
-            inStock: false, 
-            sellauthUrl: "https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-lifetime", 
-            perks: ["Coming soon", "Lifetime access"] 
-          }
-        ]
-      }
+      { id:"ue-v2", section:"Unnamed Enhancements V2 Configs", name:"UE V2 Configs", badge:"Best Configs", abbr:"UE", overview:["The BEST Unnamed Enhancements V2 Configs","Adjustable Settings, Skin Changer"], variants:[
+        { name:"Legit Config", price:4.97, oldPrice:8.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/legit-config", perks:["Best Aimbot for Closeting","Toggleable ESP"] },
+        { name:"Sniper Config", price:5.97, oldPrice:10.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/sniper-config", perks:["Best Triggerbot","Swift Config"] },
+        { name:"Semi Rage Config", price:8.97, oldPrice:16.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/semi-rage", perks:["Hard Aimbot","Wins All Games"] },
+        { name:"Rage Config", price:12.97, oldPrice:24.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/rage-config", perks:["Win HvH","Anti Aim / Ragebot"] },
+        { name:"Config Bundle", price:16.97, oldPrice:32.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/bundle-config", perks:["All 4 Configs","Best Value"] }
+      ]},
+      { id:"kj-premium", section:"Kiciahook V2 Configs", name:"Kiciahook V2 Configs", badge:"Best Configs", abbr:"KJ", overview:["The BEST Kiciahook Configs","Adjustable Settings"], variants:[
+        { name:"Legit Config", price:3.97, oldPrice:6.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/legit-config-kiciahook", perks:["Best Aimbot","Toggleable ESP"] },
+        { name:"Sniper Config", price:5.97, oldPrice:10.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/sniper-config-kiciahook", perks:["Best Triggerbot","Swift Config"] },
+        { name:"Semi Rage Config", price:6.97, oldPrice:12.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/semi-rage-config-kiciahook", perks:["Hard Aimbot","Wins All Games"] },
+        { name:"Rage Config", price:7.97, oldPrice:14.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/rage-config-kiciahook", perks:["Win HvH","Anti Aim / Orbit"] },
+        { name:"Config Bundle", price:15.97, oldPrice:30.00, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/bundle-config-kiciahook", perks:["All 4 Configs","Best Value"] }
+      ]},
+      { id:"cemetry-lua", section:"cemetry.lua", name:"cemetry.lua", badge:"Rivals Script", abbr:"LUA", overview:["cemetry.lua — Rivals script","Lifetime access"], variants:[
+        { name:"Private Key", price:10.00, oldPrice:null, inStock:true, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-private-key", perks:["Private Key","Available now","Lifetime access"] },
+        { name:"Lifetime", price:5.00, oldPrice:null, inStock:false, sellauthUrl:"https://cemetryconfigsontop.mysellauth.com/products/cemetrylua-lifetime", perks:["Coming soon","Lifetime access"] }
+      ]}
     ]
   };
 
-  // Track currently selected product and variant for modal
-  let activeProduct = null;
-  let activeVariantIdx = 0;
-
-  // Render product cards into grid container
+  let activeProduct = null, activeVariantIdx = 0;
   function renderGrid(gridId, product) {
     const container = document.getElementById(gridId);
-    if (!container) return;
-    
-    // Build HTML for each variant card
-    let cardsHTML = '';
-    for (let i = 0; i < product.variants.length; i++) {
-      const variant = product.variants[i];
-      const isOutOfStock = !variant.inStock;
-      const isLuaProduct = product.id === 'cemetry-lua';
-      
-      // Add lua availability tag if needed
-      let luaTagHTML = '';
-      if (isLuaProduct) {
-        if (isOutOfStock) {
-          luaTagHTML = '<div class="lua-tag soon">Coming Soon</div>';
-        } else {
-          luaTagHTML = '<div class="lua-tag available">Available Now</div>';
-        }
-      }
-      
-      // Build price display
-      let priceHTML = '';
-      if (variant.price !== null) {
-        priceHTML = '<div><span class="price-main">$' + variant.price.toFixed(2) + '</span>';
-        if (variant.oldPrice) {
-          priceHTML += '<span class="price-old">$' + variant.oldPrice.toFixed(2) + '</span>';
-        }
-        priceHTML += '</div>';
-      } else {
-        priceHTML = '<div class="stock-out">' + (isOutOfStock ? 'coming soon' : 'see sellauth') + '</div>';
-      }
-      
-      // Build individual card
-      cardsHTML += '<div class="card' + (isOutOfStock ? ' oos' : '') + '" data-prod-id="' + product.id + '" data-idx="' + i + '">';
-      cardsHTML += '<div class="card-thumb"><div class="card-abbr">' + product.abbr + '</div></div>';
-      cardsHTML += '<div class="card-body">';
-      cardsHTML += '<div class="card-name">' + variant.name + '</div>';
-      cardsHTML += '<div class="card-badge">' + product.badge + '</div>';
-      cardsHTML += luaTagHTML;
-      cardsHTML += '</div>';
-      cardsHTML += '<div class="card-footer">' + priceHTML;
-      cardsHTML += '<span class="' + (isOutOfStock ? 'stock-out' : 'stock-in') + '">';
-      cardsHTML += isOutOfStock ? 'Out of Stock' : 'In Stock';
-      cardsHTML += '</span></div>';
-      cardsHTML += '<button class="card-btn"' + (isOutOfStock ? ' disabled' : '') + '>';
-      cardsHTML += isOutOfStock ? 'Out of Stock' : 'View Details →';
-      cardsHTML += '</button></div>';
-    }
-    
-    container.innerHTML = cardsHTML;
-    
-    // Attach click handlers to cards
-    const cards = container.querySelectorAll('.card:not(.oos)');
-    cards.forEach(function(card) {
-      card.addEventListener('click', function(e) {
-        // Ignore if clicking disabled button
-        if (e.target.tagName === 'BUTTON' && e.target.disabled) {
-          return;
-        }
-        
+    if(!container) return;
+    container.innerHTML = product.variants.map((v,i)=>{
+      const oos = !v.inStock;
+      const isLua = product.id === 'cemetry-lua';
+      const luaTag = isLua ? `<div class="lua-tag ${oos?'soon':'available'}">${oos?'Coming Soon':'Available Now'}</div>` : '';
+      const priceHtml = v.price !== null ? `<div><span class="price-main">$${v.price.toFixed(2)}</span>${v.oldPrice?`<span class="price-old">$${v.oldPrice.toFixed(2)}</span>`:''}</div>` : `<div class="stock-out">${oos?'coming soon':'see sellauth'}</div>`;
+      return `<div class="card${oos?' oos':''}" data-prod-id="${product.id}" data-idx="${i}"><div class="card-thumb"><div class="card-abbr">${product.abbr}</div></div><div class="card-body"><div class="card-name">${v.name}</div><div class="card-badge">${product.badge}</div>${luaTag}</div><div class="card-footer">${priceHtml}<span class="${oos?'stock-out':'stock-in'}">${oos?'Out of Stock':'In Stock'}</span></div><button class="card-btn" ${oos?'disabled':''}>${oos?'Out of Stock':'View Details →'}</button></div>`;
+    }).join('');
+    container.querySelectorAll('.card:not(.oos)').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if(e.target.tagName==='BUTTON' && e.target.disabled) return;
         const prodId = card.dataset.prodId;
         const idx = parseInt(card.dataset.idx);
         openModal(prodId, idx);
       });
-      
-      // Also handle button clicks specifically
       const btn = card.querySelector('.card-btn');
-      if (btn && !btn.disabled) {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const prodId = card.dataset.prodId;
-          const idx = parseInt(card.dataset.idx);
-          openModal(prodId, idx);
-        });
-      }
+      if(btn && !btn.disabled) btn.addEventListener('click', (e) => { e.stopPropagation(); const prodId = card.dataset.prodId; const idx = parseInt(card.dataset.idx); openModal(prodId, idx); });
     });
   }
-
-  // Open modal with selected product variant
   function openModal(productId, variantIdx) {
-    // Find the product
-    activeProduct = null;
-    for (let i = 0; i < CEMETRY_FIGS.products.length; i++) {
-      if (CEMETRY_FIGS.products[i].id === productId) {
-        activeProduct = CEMETRY_FIGS.products[i];
-        break;
-      }
-    }
-    
-    if (!activeProduct) return;
-    
+    activeProduct = CEMETRY_FIGS.products.find(p=>p.id===productId);
+    if(!activeProduct) return;
     activeVariantIdx = variantIdx;
     renderModal();
-    
     document.getElementById('overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-
-  // Render modal content
   function renderModal() {
-    const p = activeProduct;
-    const v = p.variants[activeVariantIdx];
-    const isLuaProduct = p.id === 'cemetry-lua';
-    
-    // Build price HTML for modal
-    let priceHTML = '';
-    if (v.price !== null) {
-      priceHTML = '<div class="modal-price-big">$' + v.price.toFixed(2);
-      if (v.oldPrice) {
-        priceHTML += '<span class="modal-price-old">$' + v.oldPrice.toFixed(2) + '</span>';
-      }
-      priceHTML += '</div>';
-    } else {
-      priceHTML = '<div class="modal-price-big" style="font-size:1rem;">';
-      priceHTML += v.inStock ? 'Check Sellauth' : 'Not available';
-      priceHTML += '</div>';
-    }
-    
-    // Build left side of modal
-    let leftHTML = '';
-    leftHTML += '<div class="modal-img"><div class="modal-img-abbr">' + p.abbr + '</div></div>';
-    leftHTML += '<div class="modal-prod-name">' + p.name + '</div>';
-    leftHTML += '<ul class="modal-overview">';
-    for (let i = 0; i < p.overview.length; i++) {
-      leftHTML += '<li>' + p.overview[i] + '</li>';
-    }
-    leftHTML += '</ul>';
-    leftHTML += '<div class="modal-perks-box">';
-    leftHTML += '<div class="modal-perks-label">' + v.name + ' — What\'s included</div>';
-    leftHTML += '<ul class="perk-list">';
-    for (let i = 0; i < v.perks.length; i++) {
-      leftHTML += '<li>' + v.perks[i] + '</li>';
-    }
-    leftHTML += '</ul></div>';
-    
-    // Add note for non-lua products
-    if (!isLuaProduct) {
-      leftHTML += '<p class="modal-note">After payment check spam folder for the key.</p>';
-    }
-    
-    document.getElementById('modalLeft').innerHTML = leftHTML;
-    
-    // Build right side of modal
-    let rightHTML = '';
-    rightHTML += '<div class="modal-status-row">';
-    rightHTML += '<div class="' + (v.inStock ? 'dot-green' : 'dot-red') + '"></div>';
-    rightHTML += '<span class="' + (v.inStock ? 's-green' : 's-red') + '">';
-    rightHTML += v.inStock ? 'In Stock' : 'Out of Stock';
-    rightHTML += '</span></div>';
-    rightHTML += '<div class="modal-prod-sub">' + p.name + '</div>';
-    rightHTML += priceHTML;
-    rightHTML += '<div class="modal-label">Select Variant</div>';
-    rightHTML += '<div class="variants">';
-    
-    // Render variant selection rows
-    for (let i = 0; i < p.variants.length; i++) {
-      const vv = p.variants[i];
-      rightHTML += '<div class="variant-row';
-      if (i === activeVariantIdx) rightHTML += ' selected';
-      if (!vv.inStock) rightHTML += ' vdis';
-      rightHTML += '" data-vidx="' + i + '">';
-      rightHTML += '<div><div class="variant-name">' + vv.name + '</div>';
-      rightHTML += '<div class="variant-slbl">' + (vv.inStock ? 'In Stock' : 'Out of Stock') + '</div></div>';
-      rightHTML += '<div>';
-      if (vv.price !== null) {
-        rightHTML += '<div class="variant-price">$' + vv.price.toFixed(2) + '</div>';
-      } else {
-        rightHTML += '<div>N/A</div>';
-      }
-      rightHTML += '</div></div>';
-    }
-    
-    rightHTML += '</div>';
-    
-    // Purchase button
-    rightHTML += '<button class="buy-btn"' + (v.inStock ? '' : ' disabled') + '>';
-    if (v.inStock) {
-      rightHTML += 'Purchase Now';
-      if (v.price !== null) {
-        rightHTML += ' — $' + v.price.toFixed(2);
-      }
-    } else {
-      rightHTML += 'Out of Stock';
-    }
-    rightHTML += '</button>';
-    
-    document.getElementById('modalRight').innerHTML = rightHTML;
-    
-    // Attach click handlers to variant rows
-    const variantRows = document.querySelectorAll('.variant-row:not(.vdis)');
-    variantRows.forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        const idx = parseInt(el.dataset.vidx);
-        if (!isNaN(idx)) {
-          activeVariantIdx = idx;
-          renderModal();
-        }
-      });
-    });
-    
-    // Attach click handler to buy button
+    const p = activeProduct, v = p.variants[activeVariantIdx];
+    const isLua = p.id === 'cemetry-lua';
+    const priceHTML = v.price !== null ? `<div class="modal-price-big">$${v.price.toFixed(2)}${v.oldPrice?`<span class="modal-price-old">$${v.oldPrice.toFixed(2)}</span>`:''}</div>` : `<div class="modal-price-big" style="font-size:1rem;">${v.inStock?'Check Sellauth':'Not available'}</div>`;
+    document.getElementById('modalLeft').innerHTML = `<div class="modal-img"><div class="modal-img-abbr">${p.abbr}</div></div><div class="modal-prod-name">${p.name}</div><ul class="modal-overview">${p.overview.map(o=>`<li>${o}</li>`).join('')}</ul><div class="modal-perks-box"><div class="modal-perks-label">${v.name} — What's included</div><ul class="perk-list">${v.perks.map(k=>`<li>${k}</li>`).join('')}</ul></div>${!isLua?'<p class="modal-note">After payment check spam folder for the key.</p>':''}`;
+    document.getElementById('modalRight').innerHTML = `<div class="modal-status-row"><div class="${v.inStock?'dot-green':'dot-red'}"></div><span class="${v.inStock?'s-green':'s-red'}">${v.inStock?'In Stock':'Out of Stock'}</span></div><div class="modal-prod-sub">${p.name}</div>${priceHTML}<div class="modal-label">Select Variant</div><div class="variants">${p.variants.map((vv,i)=>`<div class="variant-row ${i===activeVariantIdx?'selected':''} ${!vv.inStock?'vdis':''}" data-vidx="${i}"><div><div class="variant-name">${vv.name}</div><div class="variant-slbl">${vv.inStock?'In Stock':'Out of Stock'}</div></div><div>${vv.price!==null?`<div class="variant-price">$${vv.price.toFixed(2)}</div>`:'<div>N/A</div>'}</div></div>`).join('')}</div><button class="buy-btn" ${v.inStock?'':'disabled'}>${v.inStock?`Purchase Now${v.price!==null?` — $${v.price.toFixed(2)}`:''}`:'Out of Stock'}</button>`;
+    document.querySelectorAll('.variant-row:not(.vdis)').forEach(el => { el.addEventListener('click', (e) => { const idx = parseInt(el.dataset.vidx); if(!isNaN(idx)) { activeVariantIdx = idx; renderModal(); } }); });
     const buyBtn = document.querySelector('.buy-btn');
-    if (buyBtn && !buyBtn.disabled) {
-      buyBtn.onclick = function() {
-        const url = activeProduct.variants[activeVariantIdx].sellauthUrl;
-        if (url) {
-          window.open(url, '_blank');
-        }
-      };
-    }
+    if(buyBtn && !buyBtn.disabled) buyBtn.onclick = () => { const url = activeProduct.variants[activeVariantIdx].sellauthUrl; if(url) window.open(url, '_blank'); };
   }
-
-  // Close modal
-  function closeModal() {
-    document.getElementById('overlay').classList.remove('open');
-    document.body.style.overflow = '';
-    activeProduct = null;
-  }
-
-  // Make close function available globally
+  function closeModal() { document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; activeProduct = null; }
   window.closeModal = closeModal;
-
-  // Handle overlay click to close
-  window.overlayClick = function(e) {
-    if (e.target.id === 'overlay') {
-      closeModal();
-    }
-  };
-
-  // Initialize everything when page loads
-  document.addEventListener('DOMContentLoaded', function() {
-    // Setup animated star field background
-    const starsCanvas = document.getElementById('stars');
-    const ctx = starsCanvas.getContext('2d');
-    let canvasWidth, canvasHeight;
-    let starDots = [];
-    
-    function resizeCanvas() {
-      canvasWidth = starsCanvas.width = window.innerWidth;
-      canvasHeight = starsCanvas.height = window.innerHeight;
-    }
-    
-    function createStars() {
-      starDots = [];
-      // Create 160 stars with random positions
-      for (let i = 0; i < 160; i++) {
-        starDots.push({
-          x: Math.random() * canvasWidth,
-          y: Math.random() * canvasHeight,
-          radius: Math.random() * 0.9 + 0.1,
-          opacity: Math.random() * 0.3 + 0.04,
-          speed: (Math.random() - 0.5) * 0.06
-        });
-      }
-    }
-    
-    function animateStars() {
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      
-      // Draw each star
-      starDots.forEach(function(star) {
-        star.y += star.speed;
-        
-        // Wrap stars around screen edges
-        if (star.y > canvasHeight) star.y = 0;
-        if (star.y < 0) star.y = canvasHeight;
-        
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(120,170,255,' + star.opacity + ')';
-        ctx.fill();
-      });
-      
-      requestAnimationFrame(animateStars);
-    }
-    
-    resizeCanvas();
-    createStars();
-    animateStars();
-    
-    window.addEventListener('resize', function() {
-      resizeCanvas();
-      createStars();
-    });
-    
-    // Setup scroll reveal animations
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.reveal').forEach(function(el) {
-      observer.observe(el);
-    });
-    
-    // Load product data and render grids
-    const ueProduct = CEMETRY_FIGS.products.find(function(p) { return p.id === 'ue-v2'; });
-    const kjProduct = CEMETRY_FIGS.products.find(function(p) { return p.id === 'kj-premium'; });
-    const luaProduct = CEMETRY_FIGS.products.find(function(p) { return p.id === 'cemetry-lua'; });
-    
-    // Set section titles and descriptions
-    document.getElementById('ue-title').textContent = ueProduct.section;
-    document.getElementById('kj-title').textContent = kjProduct.section;
-    document.getElementById('lua-title').textContent = luaProduct.section;
-    
-    document.getElementById('ue-sub').textContent = ueProduct.overview[0];
-    document.getElementById('kj-sub').textContent = kjProduct.overview[0];
-    document.getElementById('lua-sub').textContent = luaProduct.overview[0];
-    
-    // Render product grids
-    renderGrid('ue-grid', ueProduct);
-    renderGrid('kj-grid', kjProduct);
-    renderGrid('lua-grid', luaProduct);
+  window.overlayClick = (e) => { if(e.target.id === 'overlay') closeModal(); };
+  document.addEventListener('DOMContentLoaded', () => {
+    const starsCanvas = document.getElementById('stars'), ctx = starsCanvas.getContext('2d');
+    let w,h,dots=[];
+    function resize(){ w=starsCanvas.width=window.innerWidth; h=starsCanvas.height=window.innerHeight; }
+    function spawn(){ dots=[]; for(let i=0;i<160;i++) dots.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*0.9+0.1,o:Math.random()*0.3+0.04,s:(Math.random()-0.5)*0.06}); }
+    function draw(){ ctx.clearRect(0,0,w,h); dots.forEach(d=>{ d.y+=d.s; if(d.y>h) d.y=0; if(d.y<0) d.y=h; ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle=`rgba(120,170,255,${d.o})`; ctx.fill(); }); requestAnimationFrame(draw); }
+    resize(); spawn(); draw(); window.addEventListener('resize',()=>{ resize(); spawn(); });
+    const observer = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold:0.1 });
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    const ue = CEMETRY_FIGS.products.find(p=>p.id==='ue-v2');
+    const kj = CEMETRY_FIGS.products.find(p=>p.id==='kj-premium');
+    const lua = CEMETRY_FIGS.products.find(p=>p.id==='cemetry-lua');
+    document.getElementById('ue-title').textContent = ue.section;
+    document.getElementById('kj-title').textContent = kj.section;
+    document.getElementById('lua-title').textContent = lua.section;
+    document.getElementById('ue-sub').textContent = ue.overview[0];
+    document.getElementById('kj-sub').textContent = kj.overview[0];
+    document.getElementById('lua-sub').textContent = lua.overview[0];
+    renderGrid('ue-grid', ue);
+    renderGrid('kj-grid', kj);
+    renderGrid('lua-grid', lua);
   });
 </script>
 </body>

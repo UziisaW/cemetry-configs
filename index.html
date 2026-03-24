@@ -1,4 +1,4 @@
-<!-- yo, its me 6raveyard, im just so tuff twin - 6raveyard -->
+<!-- yo, its me 6raveyard, and im just so tuff twin - 6raveyard -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -168,57 +168,104 @@
     @media (max-width: 900px) { .hero-right { display: none; } }
 
     .menu-mock {
-      width: 420px;
-      background: rgba(8,15,28,0.9);
-      border: 1px solid rgba(30,100,255,0.2);
-      border-radius: 12px;
+      width: 460px;
+      background: #1a1a1a;
+      border: 1px solid rgba(30,100,255,0.25);
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 0 80px rgba(30,100,255,0.12), inset 0 1px 0 rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(30,100,255,0.1), 0 24px 60px rgba(0,0,0,0.6);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: #ccc;
     }
-    .mock-bar {
+    .mock-titlebar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px; background: rgba(255,255,255,0.03);
-      border-bottom: 1px solid var(--border);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text2);
+      padding: 6px 12px;
+      background: #111; border-bottom: 1px solid #333;
+      color: #aaa; font-size: 0.6rem;
     }
-    .mock-bar span:last-child { color: var(--blue2); display: flex; align-items: center; gap: 5px; }
-    .mock-bar span:last-child::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue2); box-shadow: 0 0 6px var(--blue2); }
+    .mock-game-tag { color: var(--blue2); font-weight: 600; }
     .mock-tabs {
-      display: flex; gap: 0;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
+      display: flex; background: #111;
+      border-bottom: 1px solid #333; overflow-x: auto;
     }
     .mock-tab {
-      padding: 7px 14px;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3);
-      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+      padding: 6px 12px; font-size: 0.6rem; color: #777;
+      cursor: default; white-space: nowrap; border: 1px solid transparent;
+      margin: 4px 2px -1px;
     }
-    .mock-tab.active { color: var(--text); border-bottom: 2px solid var(--blue); margin-bottom: -1px; }
-    .mock-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 12px; }
-    .mock-col { padding: 0 8px; }
-    .mock-col:first-child { border-right: 1px solid var(--border); }
-    .mock-section {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
-      letter-spacing: 0.08em; color: var(--text3); text-transform: uppercase;
-      margin: 8px 0 6px; padding: 3px 6px;
-      background: rgba(30,100,255,0.05); border-radius: 3px;
+    .mock-tab.active {
+      color: #eee; background: #1a1a1a;
+      border-color: #444 #444 #1a1a1a;
+      border-radius: 3px 3px 0 0;
     }
+    .mock-body {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; padding: 8px;
+    }
+    .mock-col { padding: 0 6px; }
+    .mock-col:first-child { border-right: 1px solid #333; }
+
+    .mock-panel {
+      border: 1px solid #3a3a3a; border-radius: 3px;
+      overflow: hidden; margin-bottom: 0;
+    }
+    .mock-panel-title {
+      text-align: center; padding: 4px 8px;
+      background: #222; border-bottom: 1px solid #3a3a3a;
+      color: #bbb; font-size: 0.58rem;
+    }
+    .mock-panel-tabs {
+      display: flex; border-bottom: 1px solid #3a3a3a;
+      background: #1e1e1e;
+    }
+    .mock-ptab {
+      flex: 1; text-align: center; padding: 4px 6px;
+      font-size: 0.57rem; color: #777;
+    }
+    .active-ptab { color: #ddd; border-bottom: 2px solid var(--blue); }
+
     .mock-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 3px 0;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text2);
+      display: flex; align-items: center; gap: 5px;
+      padding: 2px 6px; font-size: 0.58rem; color: #bbb;
     }
+    .mock-row > span:last-child:not(.mock-chk):not(.mock-fov-boxes) { margin-left: auto; color: #666; }
     .mock-chk {
-      width: 9px; height: 9px; border: 1px solid var(--border2); border-radius: 2px;
-      background: var(--blue); margin-right: 6px; flex-shrink: 0;
+      width: 10px; height: 10px; border: 1px solid #555;
+      border-radius: 1px; flex-shrink: 0; display: inline-block;
     }
-    .mock-val { color: var(--text3); font-size: 0.56rem; }
-    .mock-bar-fill {
-      height: 4px; border-radius: 2px; margin: 3px 0;
+    .mock-chk.filled { background: var(--blue); border-color: var(--blue); }
+    .mock-chk.empty  { background: transparent; }
+    .mock-fov-boxes { display: flex; gap: 3px; margin-left: auto; }
+    .mock-fov-boxes span { width: 16px; height: 10px; background: #444; border-radius: 1px; display: inline-block; }
+
+    .mock-slider-row {
+      padding: 3px 6px 1px; font-size: 0.56rem; color: #999;
     }
-    .mock-rage-bar { background: linear-gradient(90deg, var(--blue), #5b9fff); width: 100%; }
-    .mock-hit-bar  { background: linear-gradient(90deg, #ec4899, #f472b6); width: 100%; }
+    .highlight-row {
+      background: var(--blue); color: #fff; font-weight: 600;
+      padding: 2px 6px; margin: 2px 0;
+    }
+    .mock-slider {
+      height: 5px; background: #333; margin: 1px 6px 4px;
+      border-radius: 2px; overflow: hidden;
+    }
+    .mock-slider-fill { height: 100%; border-radius: 2px; }
+
+    .mock-split-row { gap: 4px; }
+    .mock-split-pill {
+      flex: 1; text-align: center; padding: 2px 4px;
+      background: #333; border-radius: 2px; font-size: 0.55rem; color: #888;
+    }
+    .active-pill { background: var(--blue); color: #fff; }
+
+    .mock-dropdown-label { padding: 3px 6px 1px; font-size: 0.55rem; color: #777; }
+    .mock-dropdown {
+      display: flex; justify-content: space-between;
+      margin: 0 6px 4px; padding: 3px 6px;
+      background: #222; border: 1px solid #3a3a3a; border-radius: 2px;
+      font-size: 0.56rem; color: #bbb;
+    }
 
     /* ─── DIVIDER ─── */
     .divider { height: 1px; background: var(--border); max-width: 1280px; margin: 0 auto; }
@@ -523,45 +570,93 @@
     </div>
     <div class="hero-right">
       <div class="menu-mock">
-        <div class="mock-bar">
-          <span>Unnamed Enhancements — Rivals</span>
-          <span>active</span>
+        <div class="mock-titlebar">
+          <span>Unnamed Enhancements — discord.gg/enhancements</span>
+          <span class="mock-game-tag">Rivals</span>
         </div>
         <div class="mock-tabs">
           <div class="mock-tab active">main</div>
           <div class="mock-tab">world</div>
           <div class="mock-tab">esp</div>
           <div class="mock-tab">visuals</div>
+          <div class="mock-tab">character</div>
           <div class="mock-tab">misc</div>
           <div class="mock-tab">settings</div>
         </div>
         <div class="mock-body">
+          <!-- LEFT COLUMN -->
           <div class="mock-col">
-            <div class="mock-section">silent aim · aimbot</div>
-            <div class="mock-row"><span style="display:flex;align-items:center;gap:4px;"><span class="mock-chk"></span>enabled</span><span class="mock-val">···</span></div>
-            <div class="mock-row"><span>manipulation</span></div>
-            <div class="mock-row"><span>closest part</span></div>
-            <div class="mock-row"><span>show fov</span></div>
-            <div class="mock-row"><span>radius</span><span class="mock-val">65px</span></div>
-            <div class="mock-bar-fill mock-rage-bar"></div>
-            <div class="mock-bar-fill mock-hit-bar"></div>
-            <div class="mock-section">ragebot · priority</div>
-            <div class="mock-row"><span style="display:flex;align-items:center;gap:4px;"><span class="mock-chk"></span>enabled</span><span class="mock-val">X</span></div>
-            <div class="mock-row"><span style="display:flex;align-items:center;gap:4px;"><span class="mock-chk"></span>void spam</span></div>
-            <div class="mock-row"><span>hide</span><span class="mock-val" style="color:var(--blue2);">attack: 1s</span></div>
+            <!-- silent aim / aimbot panel -->
+            <div class="mock-panel">
+              <div class="mock-panel-tabs">
+                <span class="mock-ptab">silent aim</span>
+                <span class="mock-ptab active-ptab">aimbot</span>
+              </div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>enabled</span><span class="mock-val">···</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>manipulation</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>closest part</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>visualize</span></div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>show fov</span><span class="mock-fov-boxes"><span></span><span></span><span></span></span></div>
+              <div class="mock-slider-row"><span>radius: 65px</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:40%;background:var(--blue);"></div></div>
+              <div class="mock-slider-row highlight-row"><span>hit chance: 100%</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:100%;background:var(--blue);"></div></div>
+            </div>
+            <!-- targeting panel -->
+            <div class="mock-panel" style="margin-top:8px;">
+              <div class="mock-panel-title">targeting</div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>visible only</span></div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>ignore protected</span></div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>disable on flash</span></div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>limit distance</span></div>
+              <div class="mock-slider-row"><span>reaction time: 0ms</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:0%;background:var(--blue);"></div></div>
+              <div class="mock-slider-row"><span>forget time: 1s</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:25%;background:var(--blue);"></div></div>
+              <div class="mock-dropdown-label">target part</div>
+              <div class="mock-dropdown">Head <span>›</span></div>
+              <div class="mock-dropdown-label">closest part blacklist</div>
+              <div class="mock-dropdown">LeftHand, LeftLowerArm, <span>›</span></div>
+            </div>
           </div>
+          <!-- RIGHT COLUMN -->
           <div class="mock-col">
-            <div class="mock-section">triggerbot</div>
-            <div class="mock-row"><span style="display:flex;align-items:center;gap:4px;"><span class="mock-chk"></span>enabled</span><span class="mock-val">···</span></div>
-            <div class="mock-section">weapons</div>
-            <div class="mock-row"><span>no spread</span></div>
-            <div class="mock-row"><span>full auto</span></div>
-            <div class="mock-row"><span>always backstab</span></div>
-            <div class="mock-row"><span>firerate</span><span class="mock-val">10%</span></div>
-            <div class="mock-section">targeting</div>
-            <div class="mock-row"><span>visible only</span></div>
-            <div class="mock-row"><span>reaction time</span><span class="mock-val">0ms</span></div>
-            <div class="mock-row"><span>target part</span><span class="mock-val">Head</span></div>
+            <!-- triggerbot panel -->
+            <div class="mock-panel">
+              <div class="mock-panel-title">triggerbot</div>
+              <div class="mock-row"><span class="mock-chk empty"></span><span>enabled</span><span class="mock-val">···</span></div>
+            </div>
+            <!-- weapons panel -->
+            <div class="mock-panel" style="margin-top:8px;">
+              <div class="mock-panel-title">weapons</div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>no spread</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>full auto</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>always backstab</span></div>
+              <div class="mock-slider-row"><span>firerate: 10%</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:10%;background:var(--blue);"></div></div>
+            </div>
+            <!-- ragebot panel -->
+            <div class="mock-panel" style="margin-top:8px;">
+              <div class="mock-panel-tabs">
+                <span class="mock-ptab active-ptab">ragebot</span>
+                <span class="mock-ptab">priority</span>
+              </div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>enabled</span><span class="mock-val">X</span></div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>void spam</span></div>
+              <div class="mock-row mock-split-row">
+                <span class="mock-split-pill">hide: 0.01s</span>
+                <span class="mock-split-pill active-pill">attack: 1s</span>
+              </div>
+              <div class="mock-row"><span class="mock-chk filled"></span><span>projectile mimic</span></div>
+              <div class="mock-slider-row"><span>shoot attempts: 1x</span></div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:12%;background:var(--blue);"></div></div>
+              <div class="mock-dropdown-label">attack mode</div>
+              <div class="mock-dropdown">gun <span>›</span></div>
+              <div class="mock-dropdown-label">preferred weapon</div>
+              <div class="mock-dropdown">primary <span>›</span></div>
+              <div class="mock-dropdown-label">settings</div>
+              <div class="mock-dropdown">swap weapons when empty, prefer› </div>
+            </div>
           </div>
         </div>
       </div>
@@ -707,6 +802,7 @@
 
 <script src="cemetry-figs.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
   // ── stars ──
   (function(){
     const c=document.getElementById('stars'),ctx=c.getContext('2d');
@@ -834,6 +930,8 @@
 
   let toastTimer;
   function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800); }
+
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
